@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inventaris Bengkel</title>
+</head>
+<body>
+
+<h2>Login</h2>
+<input id="username" placeholder="Username"><br>
+<input id="password" type="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+
+<div id="app" style="display:none;">
+  <h2>Peminjaman Alat</h2>
+  <input id="nama" placeholder="Nama"><br>
+  <input id="alat" placeholder="Nama Alat"><br>
+  <button onclick="pinjam()">Pinjam</button>
+</div>
+
+<script>
+const url = "https://script.google.com/macros/s/AKfycbw1u5cpj9FKRdLoz3vJRly99hSiTy7q8FIdAY7uu0Kt7M_tv5yiTPlg5-S0ty-u8O_Y/exec";
+
+function login() {
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "login",
+      username: document.getElementById("username").value,
+      password: document.getElementById("password").value
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.status === "success") {
+      alert("Login berhasil");
+      document.getElementById("app").style.display = "block";
+    } else {
+      alert("Login gagal");
+    }
+  });
+}
+
+function pinjam() {
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "pinjam",
+      nama: document.getElementById("nama").value,
+      alat: document.getElementById("alat").value,
+      tanggal: new Date().toLocaleString()
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    alert("Data tersimpan!");
+  });
+}
+</script>
+
+</body>
+</html>
