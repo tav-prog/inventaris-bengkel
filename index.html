@@ -15,6 +15,22 @@
   <input id="nama" placeholder="Nama"><br>
   <input id="alat" placeholder="Nama Alat"><br>
   <button onclick="pinjam()">Pinjam</button>
+
+  <h3>Data Peminjaman</h3>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Nama</th>
+        <th>Alat</th>
+        <th>Tanggal</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tabelData"></tbody>
+  </table>
+
+  <button onclick="loadData()">Refresh Data</button>
+
 </div>
 
 <script>
@@ -34,6 +50,7 @@ function login() {
     if (res.status === "success") {
       alert("Login berhasil");
       document.getElementById("app").style.display = "block";
+      loadData();
     } else {
       alert("Login gagal");
     }
@@ -53,6 +70,30 @@ function pinjam() {
   .then(res => res.json())
   .then(res => {
     alert("Data tersimpan!");
+  });
+}
+
+function loadData() {
+  fetch(url, {
+    method: "POST",
+    body: JSON.stringify({
+      action: "getData"
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    let html = "";
+    data.forEach(d => {
+      html += `
+        <tr>
+          <td>${d.nama}</td>
+          <td>${d.alat}</td>
+          <td>${d.tanggal}</td>
+          <td>${d.status}</td>
+        </tr>
+      `;
+    });
+    document.getElementById("tabelData").innerHTML = html;
   });
 }
 </script>
