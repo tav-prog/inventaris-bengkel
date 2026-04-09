@@ -30,12 +30,12 @@
   </table>
 
   <button onclick="loadData()">Refresh Data</button>
-
 </div>
 
 <script>
-const url = "https://script.google.com/macros/s/AKfycbwtgnI49RlM-3PpdyIA3J1B73LBzjL8pVKc-JrZP2x9ULu9BVteJmrCuBFo9extI1T_rg/exec";
+const url = "https://script.google.com/macros/s/AKfycbyR76X8a70WxvKOEupMuX9dr5wwThwIXiusdxgdDaxNG7ZZVnYjqHnK0lelyUxl5SLVGQ/exec";
 
+// 🔐 LOGIN
 function login() {
   fetch(url, {
     method: "POST",
@@ -50,13 +50,14 @@ function login() {
     if (res.status === "success") {
       alert("Login berhasil");
       document.getElementById("app").style.display = "block";
-      loadData();
+      loadData(); // 🔥 auto load data
     } else {
       alert("Login gagal");
     }
   });
 }
 
+// 📥 PINJAM
 function pinjam() {
   fetch(url, {
     method: "POST",
@@ -70,16 +71,13 @@ function pinjam() {
   .then(res => res.json())
   .then(res => {
     alert("Data tersimpan!");
+    loadData(); // 🔥 refresh otomatis
   });
 }
 
+// 📊 AMBIL DATA (ANTI CORS)
 function loadData() {
-  fetch(url, {
-    method: "POST",
-    body: JSON.stringify({
-      action: "getData"
-    })
-  })
+  fetch(url + "?action=getData")
   .then(res => res.json())
   .then(data => {
     let html = "";
@@ -93,6 +91,7 @@ function loadData() {
         </tr>
       `;
     });
+
     document.getElementById("tabelData").innerHTML = html;
   });
 }
